@@ -1,0 +1,32 @@
+.breadcrumbs{
+  padding-left: 1em;
+}
+
+ol.steps li{
+  padding-bottom: 1em;
+}
+
+/*******************
+ * page layout
+ ******************/
+.page-layout{
+  display: grid;
+  grid-template-columns: 25% 75%;
+  grid-template-areas: 
+  "sidebar main";
+}
+
+.sidebar{
+  grid-area: sidebar;
+}
+
+main{
+  grid-area: main;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+main h1{
+  padding-top: 0;
+  margin-top: 0;
+}

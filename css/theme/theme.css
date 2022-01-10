@@ -1,6 +1,16 @@
-:root{
-  --page-header-background-color: black;
-  --page-header-color: white;
-  --divider-color: gray;
+:root {
+  /* Color Palette */
+  --primary-color: white;
+  --secondary-color: black;
+  --ternary-color: gray;
   --accent-color: red;
+
+  /* Theme Styles */
+  --page-header-background-color: var(--secondary-color);
+  --page-header-color: var(--primary-color);
+  --divider-color: var(--ternary-color);
+
+  --body-background-color: var(--primary-color);
+  --body-color: var(--secondary-color);
 }
+

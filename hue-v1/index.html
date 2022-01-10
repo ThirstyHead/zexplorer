@@ -10,6 +10,7 @@
     
     <link rel="stylesheet" href="/css/index.css">
     <script src="/component/ze-header/index.js"></script>
+    <script src="/hue-v1/component/ze-hue-v1-sidebar/index.js"></script>
   </head>
 
   <body>
@@ -18,12 +19,16 @@
       <a href="/">Home</a> &gt; Hue v1
     </p>
 
+    <section class="page-layout">
+      <ze-hue-v1-sidebar></ze-hue-v1-sidebar>
+  
+      <main>
+        <h1>Hue v1</h1>
+        <p>If you have Philips Hue smart lights, this is the RESTful API that you can use to programmatically interact with your lights -- turn them on/off, change colors, etc.</p>
 
-    <h1>Hue v1</h1>
-    
-    <p>If you have Philips Hue smart lights, this is the RESTful API that you can use to programmatically interact with your lights -- turn them on/off, change colors, etc.</p>
+        <p>Version 1 of the Hue api is being phased out in favor of Version 2, but v2 doesn't currently offer all of the capabilities of v1. </p>
 
-    <p>Version 1 of the Hue api is being phased out in favor of Version 2, but v2 doesn't currently offer all of the capabilities of v1. </p>
-
+      </main>
+    </section>
   </body>
 </html>
