@@ -71,8 +71,8 @@ window.customElements.define('ze-header',
 
         <nav>
           <ul>
-            <li><a href="/v1">v1</a></li>
-            <li><a href="/v2">v2</a></li>
+            <li><a href="/hue-v1">hue-v1</a></li>
+            <li><a href="/hue-v2">hue-v2</a></li>
           </ul>
         </nav>
       `;
