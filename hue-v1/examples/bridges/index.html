@@ -16,14 +16,34 @@
       window.addEventListener('load', init);
 
       function init(){
-        const button = document.querySelector('#run');
-        button.addEventListener('click', run);
+        const discoveryButton = document.querySelector('#discovery-run');
+        discoveryButton.addEventListener('click', discoveryRun);
+        
+        const registerButton = document.querySelector('#register-run');
+        registerButton.addEventListener('click', registerRun);
       }
 
-      function run(){
+      function discoveryRun(){
         const url = document.querySelector('#discovery-url').value;
         const output = document.querySelector('#discovery-url-output');
         fetch(url)
+          .then(response => response.json())
+          .then(data => output.value = JSON.stringify(data, null, 2));
+      }
+
+      function registerRun(){
+        const url = document.querySelector('#register-url').value;
+        const body = document.querySelector('#register-url-body').value;
+        const output = document.querySelector('#register-url-output');
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: body
+        };
+
+        fetch(url, config)
           .then(response => response.json())
           .then(data => output.value = JSON.stringify(data, null, 2));
       }
@@ -52,7 +72,7 @@
         <p>To discover the IP address(es) of your bridge(s), visit this URL: <a href="https://discovery.meethue.com">https://discovery.meethue.com</a></p>
 
         <div>
-          <button id="run">Run</button><br>
+          <button id="discovery-run">Run</button><br>
           <label for="discovery-url">Discovery URL</label><br>
           <input id="discovery-url" 
                  type="url" 
@@ -62,6 +82,32 @@
                     cols="50"
                     rows="20"></textarea>
         </div>
+
+
+        <h2>Registration</h2>
+        <p>All interactions with a Hue bridge must be performed with a registered "New User" (v1) or "Application Key" (v2).</p>
+
+        <p>To register a new user, press the Link button on the top of the bridge and send a <code>HTTP POST</code> to <code>https://[bridge IP]/api</code>. The body of the post should be a JSON block with a <code>devicetype</code> field in the form of <code>application_name#device_name</code></p>
+
+        <div>
+          <button id="register-run">Run</button><br>
+          <label for="register-url">Register URL</label><br>
+          <input id="register-url" 
+                 type="url" 
+                 value="https://hue_bridge_ip/api"
+                 size="50"><br>
+          <textarea id="register-url-body"
+                    cols="50"
+                    rows="5">
+{
+  "devicetype": "test_app#test_device"
+}
+          </textarea>
+          <textarea id="register-url-output"
+                    cols="50"
+                    rows="20"></textarea>
+        </div>
+
 
       </main>
     </section>
