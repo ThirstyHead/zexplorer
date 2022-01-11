@@ -21,6 +21,16 @@
         
         const registerButton = document.querySelector('#register-run');
         registerButton.addEventListener('click', registerRun);
+
+        const rememberHueBridgeButton = document.querySelector('#hue-bridge-ip-remember');
+        rememberHueBridgeButton.addEventListener('click', rememberHueBridge);
+
+        showHueBridge();
+        
+        const rememberHueKeyButton = document.querySelector('#hue-bridge-key-remember');
+        rememberHueKeyButton.addEventListener('click', rememberHueKey);
+
+        showHueKey();
       }
 
       function discoveryRun(){
@@ -48,6 +58,25 @@
           .then(data => output.value = JSON.stringify(data, null, 2));
       }
 
+      function rememberHueBridge(){
+        const value = document.querySelector('#hue-bridge-ip').value;
+        localStorage.setItem('hueBridgeIp', value);
+      }
+
+      function showHueBridge(){
+        const value = localStorage.getItem('hueBridgeIp') || '';
+        document.querySelector('#hue-bridge-ip').value = value;
+      }
+
+      function rememberHueKey(){
+        const value = document.querySelector('#hue-bridge-key').value;
+        localStorage.setItem('hueBridgeKey', value);
+      }
+
+      function showHueKey(){
+        const value = localStorage.getItem('hueBridgeKey') || '';
+        document.querySelector('#hue-bridge-key').value = value;
+      }
     </script>
   </head>
 
@@ -100,8 +129,17 @@
 ]
             </code></pre>
           </details>
-
         </div>
+
+        <div>
+          <hr>
+          <button id="hue-bridge-ip-remember">Remember</button><br>
+          <label for="hue-bridge-ip">Hue Bridge IP</label><br>
+          <input id="hue-bridge-ip"
+                 type="text">
+        </div>
+
+
 
 
         <h2 id="Registration">Registration</h2>
@@ -139,11 +177,18 @@
 ]
             </code></pre>
           </details>
-
-         
-
-
         </div>
+
+        <div>
+          <hr>
+          <button id="hue-bridge-key-remember">Remember</button><br>
+          <label for="hue-bridge-key">Hue Bridge Key</label><br>
+          <input id="hue-bridge-key"
+                 size="50"
+                 type="text">
+        </div>
+
+
 
 
       </main>
