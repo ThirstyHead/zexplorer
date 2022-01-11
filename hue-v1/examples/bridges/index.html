@@ -47,6 +47,7 @@
           .then(response => response.json())
           .then(data => output.value = JSON.stringify(data, null, 2));
       }
+
     </script>
   </head>
 
@@ -64,11 +65,11 @@
       <ze-hue-v1-sidebar open="2"></ze-hue-v1-sidebar>
 
       <main>
-        <h1>Bridges - Hue v1</h1>
+        <h1 id="Bridges">Bridges - Hue v1</h1>
 
         <p>Bridges are the link between your Wifi network (which your laptop is on) and your Zigbee network (which your lightbulbs are on). All RESTful API calls are sent to your bridge, which then communicates with your Zigbee devices on your behalf.</p>
 
-        <h2>Discovery</h2>
+        <h2 id="Discovery">Discovery</h2>
         <p>To discover the IP address(es) of your bridge(s), visit this URL: <a href="https://discovery.meethue.com">https://discovery.meethue.com</a></p>
 
         <div>
@@ -81,10 +82,29 @@
           <textarea id="discovery-url-output"
                     cols="50"
                     rows="20"></textarea>
+
+          <details>
+            <summary>Example response</summary>
+            <pre><code>
+[
+  {
+    "id": "ecb5fafffe9bba6f",
+    "internalipaddress": "192.168.1.118",
+    "port": 443
+  },
+  {
+    "id": "ecb5fafffe8ac112",
+    "internalipaddress": "192.168.1.104",
+    "port": 443
+  }
+]
+            </code></pre>
+          </details>
+
         </div>
 
 
-        <h2>Registration</h2>
+        <h2 id="Registration">Registration</h2>
         <p>All interactions with a Hue bridge must be performed with a registered "New User" (v1) or "Application Key" (v2).</p>
 
         <p>To register a new user, press the Link button on the top of the bridge and send a <code>HTTP POST</code> to <code>https://[bridge IP]/api</code>. The body of the post should be a JSON block with a <code>devicetype</code> field in the form of <code>application_name#device_name</code></p>
@@ -100,12 +120,29 @@
                     cols="50"
                     rows="5">
 {
-  "devicetype": "test_app#test_device"
+  "devicetype": "app_name#device_name"
 }
           </textarea>
           <textarea id="register-url-output"
                     cols="50"
                     rows="20"></textarea>
+
+          <details>
+            <summary>Example response</summary>
+            <pre><code>
+[
+  {
+    "success": {
+      "username": "gaReKOfSQHV8GUjc6HzQ1axea-nXa9hhIFDlewWU"
+    }
+  }
+]
+            </code></pre>
+          </details>
+
+         
+
+
         </div>
 
 
