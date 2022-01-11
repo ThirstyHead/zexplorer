@@ -11,6 +11,23 @@
     <link rel="stylesheet" href="/css/index.css">
     <script src="/component/ze-header/index.js"></script>
     <script src="/hue-v1/component/ze-hue-v1-sidebar/index.js"></script>
+
+    <script>
+      window.addEventListener('load', init);
+
+      function init(){
+        const button = document.querySelector('#run');
+        button.addEventListener('click', run);
+      }
+
+      function run(){
+        const url = document.querySelector('#discovery-url').value;
+        const output = document.querySelector('#discovery-url-output');
+        fetch(url)
+          .then(response => response.json())
+          .then(data => output.value = JSON.stringify(data, null, 2));
+      }
+    </script>
   </head>
 
   </head>
@@ -28,6 +45,24 @@
 
       <main>
         <h1>Bridges - Hue v1</h1>
+
+        <p>Bridges are the link between your Wifi network (which your laptop is on) and your Zigbee network (which your lightbulbs are on). All RESTful API calls are sent to your bridge, which then communicates with your Zigbee devices on your behalf.</p>
+
+        <h2>Discovery</h2>
+        <p>To discover the IP address(es) of your bridge(s), visit this URL: <a href="https://discovery.meethue.com">https://discovery.meethue.com</a></p>
+
+        <div>
+          <button id="run">Run</button><br>
+          <label for="discovery-url">Discovery URL</label><br>
+          <input id="discovery-url" 
+                 type="url" 
+                 value="https://discovery.meethue.com"
+                 size="50"><br>
+          <textarea id="discovery-url-output"
+                    cols="50"
+                    rows="20"></textarea>
+        </div>
+
       </main>
     </section>
   </body>
