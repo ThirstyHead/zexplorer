@@ -19,9 +19,11 @@
         // Reset example URLs
         const rememberHueBridgeField = document.querySelector('#hue-bridge-ip');
         rememberHueBridgeField.addEventListener('change', setGroupsListUrl);
+        rememberHueBridgeField.addEventListener('change', setLightsOnUrl);
 
         const rememberHueKeyField = document.querySelector('#hue-bridge-key');
         rememberHueKeyField.addEventListener('change', setGroupsListUrl);
+        rememberHueKeyField.addEventListener('change', setLightsOnUrl);
 
         // Remember convenience functions
         const rememberHueBridgeButton = document.querySelector('#hue-bridge-ip-remember');
@@ -38,7 +40,8 @@
         const groupsListButton = document.querySelector('#groups-list-run');
         groupsListButton.addEventListener('click', groupsListRun);
 
-
+        const lightsOnButton = document.querySelector('#lights-on-run');
+        lightsOnButton.addEventListener('click', lightsOnRun);
       }
         
 
@@ -50,12 +53,12 @@
           .then(data => output.value = JSON.stringify(data, null, 2));
       }
 
-      function registerRun(){
-        const url = document.querySelector('#register-url').value;
-        const body = document.querySelector('#register-url-body').value;
-        const output = document.querySelector('#register-url-output');
+      function lightsOnRun(){
+        const url = document.querySelector('#lights-on-url').value;
+        const body = document.querySelector('#lights-on-url-body').value;
+        const output = document.querySelector('#lights-on-url-output');
         const config = {
-          method: 'POST',
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -103,6 +106,15 @@
 
         let url = `https://${hueBridgeIp}/api/${hueBridgeKey}/groups`;
         const field = document.querySelector('#groups-list-url');
+        field.value = url;
+      }
+
+      function setLightsOnUrl(){
+        const hueBridgeIp = document.querySelector('#hue-bridge-ip').value || '[bridge-ip]';
+        const hueBridgeKey = document.querySelector('#hue-bridge-key').value || '[bridge-key]';
+
+        let url = `https://${hueBridgeIp}/api/${hueBridgeKey}/groups/[group-id]/action`;
+        const field = document.querySelector('#lights-on-url');
         field.value = url;
       }
     </script>
@@ -153,12 +165,17 @@
         <p><code>Groups</code> are a way to interact with a collection of lights. A <code>group</code> has a <code>type</code>, like <code>Room</code> or <code>Zone</code>.</p>
 
         <p>Hue documentation: <a href="https://developers.meethue.com/develop/hue-api/groupds-api/#214_notes">Hue Group Types</a></p>
+
+        <p>To return a list of rooms, send an <code>HTTP GET</code> request to <code>https://[bridge-ip]/api/[bridge-key]/groups</code></p>
+
+        <p>To return a single room, send an <code>HTTP GET</code> request to <code>https://[bridge-ip]/api/[bridge-key]/groups/[room-id]</code></p>
+
         <div>
           <button id="groups-list-run">Run</button><br>
           <label for="groups-list-url">Groups List URL</label><br>
           <input id="groups-list-url" 
                  type="url" 
-                 value="https://discovery.meethue.com"
+                 value="https://[bridge-ip]/api/[bridge-key]/groups"
                  size="80"><br>
           <textarea id="groups-list-url-output"
                     cols="50"
@@ -219,28 +236,30 @@
         </div>
 
 
-<!--
 
-        <h2 id="Registration">Registration</h2>
-        <p>All interactions with a Hue bridge must be performed with a registered "New User" (v1) or "Application Key" (v2).</p>
+        <h2 id="Turn-On-All-Lights">Turn On All Lights</h2>
 
-        <p>To register a new user, press the Link button on the top of the bridge and send a <code>HTTP POST</code> to <code>https://[bridge IP]/api</code>. The body of the post should be a JSON block with a <code>devicetype</code> field in the form of <code>application_name#device_name</code></p>
+        <p>To turn on all lights in a room, send a <code>HTTP PUT</code> to <code>https://[bridge-ip]/api/[bridge-key]/groups/[group-id]/action</code>. The body of the <code>PUT</code> should be a JSON block with <code>"on":true</code>.</p>
+
+        <p>"Turning all all lights in the room" is technically "setting the group state" of a group. There might be other types of devices in the group (sensors, etc.). You might also want to set other types of state on lights -- changing the colors, or dimming.</p>
+
+        <p>Hue documentation: <a href="https://developers.meethue.com/develop/hue-api/groupds-api/#25_set_group_state">Set Group State</a>.</p>
 
         <div>
-          <button id="register-run">Run</button><br>
-          <label for="register-url">Register URL</label><br>
-          <input id="register-url" 
+          <button id="lights-on-run">Run</button><br>
+          <label for="lights-on-url">Lights URL</label><br>
+          <input id="lights-on-url" 
                  type="url" 
-                 value="https://hue_bridge_ip/api"
-                 size="50"><br>
-          <textarea id="register-url-body"
+                 value="https://[bridge-ip]/api/[bridge-key]/groups/[group-id]/action"
+                 size="90"><br>
+          <textarea id="lights-on-url-body"
                     cols="50"
                     rows="5">
 {
-  "devicetype": "app_name#device_name"
+  "on": true
 }
           </textarea>
-          <textarea id="register-url-output"
+          <textarea id="lights-on-url-output"
                     cols="50"
                     rows="20"></textarea>
 
@@ -250,17 +269,13 @@
 [
   {
     "success": {
-      "username": "gaReKOfSQHV8GUjc6HzQ1axea-nXa9hhIFDlewWU"
+      "/groups/2/action/on": true
     }
   }
 ]
             </code></pre>
           </details>
         </div>
-
-        -->
-
-
 
       </main>
     </section>
