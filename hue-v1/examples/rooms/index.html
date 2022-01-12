@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Rooms - Hue V1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Scott Davis <scott@thirstyhead.com>">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/component/ze-header/index.js"></script>
+    <script src="/hue-v1/component/ze-hue-v1-sidebar/index.js"></script>
+
+    <script>
+      window.addEventListener('load', init);
+
+      function init(){
+        // Reset example URLs
+        const rememberHueBridgeField = document.querySelector('#hue-bridge-ip');
+        rememberHueBridgeField.addEventListener('change', setGroupsListUrl);
+
+        const rememberHueKeyField = document.querySelector('#hue-bridge-key');
+        rememberHueKeyField.addEventListener('change', setGroupsListUrl);
+
+        // Remember convenience functions
+        const rememberHueBridgeButton = document.querySelector('#hue-bridge-ip-remember');
+        rememberHueBridgeButton.addEventListener('click', rememberHueBridge);
+
+        showHueBridge();
+        
+        const rememberHueKeyButton = document.querySelector('#hue-bridge-key-remember');
+        rememberHueKeyButton.addEventListener('click', rememberHueKey);
+
+        showHueKey();
+
+        // Register example listeners
+        const groupsListButton = document.querySelector('#groups-list-run');
+        groupsListButton.addEventListener('click', groupsListRun);
+
+
+      }
+        
+
+      function groupsListRun(){
+        const url = document.querySelector('#groups-list-url').value;
+        const output = document.querySelector('#groups-list-url-output');
+        fetch(url)
+          .then(response => response.json())
+          .then(data => output.value = JSON.stringify(data, null, 2));
+      }
+
+      function registerRun(){
+        const url = document.querySelector('#register-url').value;
+        const body = document.querySelector('#register-url-body').value;
+        const output = document.querySelector('#register-url-output');
+        const config = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: body
+        };
+
+        fetch(url, config)
+          .then(response => response.json())
+          .then(data => output.value = JSON.stringify(data, null, 2));
+      }
+
+      function rememberHueBridge(){
+        const value = document.querySelector('#hue-bridge-ip').value;
+        localStorage.setItem('hueBridgeIp', value);
+      }
+
+      function showHueBridge(){
+        const value = localStorage.getItem('hueBridgeIp') || '';
+        const field = document.querySelector('#hue-bridge-ip');
+        field.value = value;
+        
+        //trigger the change event
+        const e = new Event('change');
+        field.dispatchEvent(e);
+      }
+
+      function rememberHueKey(){
+        const value = document.querySelector('#hue-bridge-key').value;
+        localStorage.setItem('hueBridgeKey', value);
+      }
+
+      function showHueKey(){
+        const value = localStorage.getItem('hueBridgeKey') || '';
+        const field = document.querySelector('#hue-bridge-key');
+        field.value = value;
+
+        //trigger the change event
+        const e = new Event('change');
+        field.dispatchEvent(e);
+      }
+
+      function setGroupsListUrl(){
+        const hueBridgeIp = document.querySelector('#hue-bridge-ip').value || '[bridge-ip]';
+        const hueBridgeKey = document.querySelector('#hue-bridge-key').value || '[bridge-key]';
+
+        let url = `https://${hueBridgeIp}/api/${hueBridgeKey}/groups`;
+        const field = document.querySelector('#groups-list-url');
+        field.value = url;
+      }
+    </script>
+
+    </script>
+  </head>
+
+  </head>
+
+  <body>
+    <ze-header></ze-header>
+    <p class="breadcrumbs">
+      <a href="/">Home</a> &gt; 
+      <a href="/hue-v1"> Hue v1</a> &gt;
+      Rooms (Groups)
+    </p>
+
+    <section class="page-layout">
+      <ze-hue-v1-sidebar open="2"></ze-hue-v1-sidebar>
+
+      <main>
+        <h1 id="Rooms">Rooms (Groups) - Hue v1</h1>
+        <p>Rooms are a specific type of Group in the Hue v1 API.</p>
+
+        <p>Hue documentation: <a href="https://developers.meethue.com/develop/hue-api/groupds-api/">Groups API</a>.</p>
+
+        <div>
+          <hr>
+          <label for="hue-bridge-ip">Hue Bridge IP</label>
+          <input id="hue-bridge-ip"
+                 type="text">
+          <button id="hue-bridge-ip-remember">Remember</button><br>
+
+
+          <label for="hue-bridge-key">Hue Bridge Key</label>
+          <input id="hue-bridge-key"
+                 size="50"
+                 type="text">
+          <button id="hue-bridge-key-remember">Remember</button><br>
+          <hr>
+        </div>
+
+
+
+
+        <h2 id="List">List All Rooms (Groups)</h2>
+
+        <p><code>Groups</code> are a way to interact with a collection of lights. A <code>group</code> has a <code>type</code>, like <code>Room</code> or <code>Zone</code>.</p>
+
+        <p>Hue documentation: <a href="https://developers.meethue.com/develop/hue-api/groupds-api/#214_notes">Hue Group Types</a></p>
+        <div>
+          <button id="groups-list-run">Run</button><br>
+          <label for="groups-list-url">Groups List URL</label><br>
+          <input id="groups-list-url" 
+                 type="url" 
+                 value="https://discovery.meethue.com"
+                 size="80"><br>
+          <textarea id="groups-list-url-output"
+                    cols="50"
+                    rows="20"></textarea>
+
+          <details>
+            <summary>Example response</summary>
+            <pre><code>
+{
+  "2": {
+    "name": "Office",
+    "lights": [
+      "18",
+      "17",
+      "13"
+    ],
+    "sensors": [],
+    "type": "Room",
+    "state": {
+      "all_on": false,
+      "any_on": true
+    },
+    "recycle": false,
+    "class": "Office",
+    "action": {
+      "on": true,
+      "alert": "select"
+    }
+  },
+  "3": {
+    "name": "Kitchen",
+    "lights": [
+      "3",
+      "16",
+      "15",
+      "19",
+      "14"
+    ],
+    "sensors": [],
+    "type": "Room",
+    "state": {
+      "all_on": false,
+      "any_on": true
+    },
+    "recycle": false,
+    "class": "Kitchen",
+    "action": {
+      "on": true,
+      "bri": 254,
+      "ct": 366,
+      "alert": "select",
+      "colormode": "ct"
+    }
+  }
+}
+            </code></pre>
+          </details>
+        </div>
+
+
+<!--
+
+        <h2 id="Registration">Registration</h2>
+        <p>All interactions with a Hue bridge must be performed with a registered "New User" (v1) or "Application Key" (v2).</p>
+
+        <p>To register a new user, press the Link button on the top of the bridge and send a <code>HTTP POST</code> to <code>https://[bridge IP]/api</code>. The body of the post should be a JSON block with a <code>devicetype</code> field in the form of <code>application_name#device_name</code></p>
+
+        <div>
+          <button id="register-run">Run</button><br>
+          <label for="register-url">Register URL</label><br>
+          <input id="register-url" 
+                 type="url" 
+                 value="https://hue_bridge_ip/api"
+                 size="50"><br>
+          <textarea id="register-url-body"
+                    cols="50"
+                    rows="5">
+{
+  "devicetype": "app_name#device_name"
+}
+          </textarea>
+          <textarea id="register-url-output"
+                    cols="50"
+                    rows="20"></textarea>
+
+          <details>
+            <summary>Example response</summary>
+            <pre><code>
+[
+  {
+    "success": {
+      "username": "gaReKOfSQHV8GUjc6HzQ1axea-nXa9hhIFDlewWU"
+    }
+  }
+]
+            </code></pre>
+          </details>
+        </div>
+
+        -->
+
+
+
+      </main>
+    </section>
+  </body>
+</html>
