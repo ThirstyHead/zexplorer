@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Rooms - Hue V1</title>
+    <title>Lights - Hue V1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Scott Davis <scott@thirstyhead.com>">
     <meta name="description" content="">
@@ -18,11 +18,11 @@
       function init(){
         // Reset example URLs
         const rememberHueBridgeField = document.querySelector('#hue-bridge-ip');
-        rememberHueBridgeField.addEventListener('change', setGroupsListUrl);
+        rememberHueBridgeField.addEventListener('change', setLightsListUrl);
         rememberHueBridgeField.addEventListener('change', setLightsOnUrl);
 
         const rememberHueKeyField = document.querySelector('#hue-bridge-key');
-        rememberHueKeyField.addEventListener('change', setGroupsListUrl);
+        rememberHueKeyField.addEventListener('change', setLightsListUrl);
         rememberHueKeyField.addEventListener('change', setLightsOnUrl);
 
         // Remember convenience functions
@@ -37,17 +37,17 @@
         showHueKey();
 
         // Register example listeners
-        const groupsListButton = document.querySelector('#groups-list-run');
-        groupsListButton.addEventListener('click', groupsListRun);
+        const lightsListButton = document.querySelector('#lights-list-run');
+        lightsListButton.addEventListener('click', lightsListRun);
 
         const lightsOnButton = document.querySelector('#lights-on-run');
         lightsOnButton.addEventListener('click', lightsOnRun);
       }
         
 
-      function groupsListRun(){
-        const url = document.querySelector('#groups-list-url').value;
-        const output = document.querySelector('#groups-list-url-output');
+      function lightsListRun(){
+        const url = document.querySelector('#lights-list-url').value;
+        const output = document.querySelector('#lights-list-url-output');
         fetch(url)
           .then(response => response.json())
           .then(data => output.value = JSON.stringify(data, null, 2))
@@ -104,12 +104,12 @@
         field.dispatchEvent(e);
       }
 
-      function setGroupsListUrl(){
+      function setLightsListUrl(){
         const hueBridgeIp = document.querySelector('#hue-bridge-ip').value || '[bridge-ip]';
         const hueBridgeKey = document.querySelector('#hue-bridge-key').value || '[bridge-key]';
 
-        let url = `https://${hueBridgeIp}/api/${hueBridgeKey}/groups`;
-        const field = document.querySelector('#groups-list-url');
+        let url = `https://${hueBridgeIp}/api/${hueBridgeKey}/lights`;
+        const field = document.querySelector('#lights-list-url');
         field.value = url;
       }
 
@@ -133,17 +133,17 @@
     <p class="breadcrumbs">
       <a href="/">Home</a> &gt; 
       <a href="/hue-v1"> Hue v1</a> &gt;
-      Rooms (Groups)
+      Lights
     </p>
 
     <section class="page-layout">
       <ze-hue-v1-sidebar open="2"></ze-hue-v1-sidebar>
 
       <main>
-        <h1 id="Rooms">Rooms (Groups) - Hue v1</h1>
-        <p>Rooms are a specific type of Group in the Hue v1 API.</p>
+        <h1 id="Lights">Lights - Hue v1</h1>
+        <p>Lights are one of the most common types of Zigbee devices that can be controlled by the Philips Hue API.</p>
 
-        <p>Hue documentation: <a href="https://developers.meethue.com/develop/hue-api/groupds-api/">Groups API</a>.</p>
+        <p>Hue documentation: <a href="https://developers.meethue.com/develop/hue-api/lights-api/">Lights API</a>.</p>
 
         <div>
           <hr>
@@ -164,24 +164,24 @@
 
 
 
-        <h2 id="List">List All Rooms (Groups)</h2>
+        <h2 id="List">List All Lights</h2>
 
-        <p><code>Groups</code> are a way to interact with a collection of lights. A <code>group</code> has a <code>type</code>, like <code>Room</code> or <code>Zone</code>.</p>
+        <p>Through the Hue API, lights can be turned on, turned off, dimmed, have their colors changed, and a number of other actions.</p>
 
-        <p>Hue documentation: <a href="https://developers.meethue.com/develop/hue-api/groupds-api/#214_notes">Hue Group Types</a></p>
+        <p>Hue documentation: <a href="https://developers.meethue.com/develop/hue-api/lights-api/#11_get_all_lights">Get All Lights</a></p>
 
-        <p>To return a list of rooms, send an <code>HTTP GET</code> request to <code>https://[bridge-ip]/api/[bridge-key]/groups</code></p>
+        <p>To return a list of lights, send an <code>HTTP GET</code> request to <code>https://[bridge-ip]/api/[bridge-key]/lights</code></p>
 
-        <p>To return a single room, send an <code>HTTP GET</code> request to <code>https://[bridge-ip]/api/[bridge-key]/groups/[room-id]</code></p>
+        <p>To return a single light, send an <code>HTTP GET</code> request to <code>https://[bridge-ip]/api/[bridge-key]/lights/[light-id]</code></p>
 
         <div>
-          <button id="groups-list-run">Run</button><br>
-          <label for="groups-list-url">Groups List URL</label><br>
-          <input id="groups-list-url" 
+          <button id="lights-list-run">Run</button><br>
+          <label for="lights-list-url">Lights List URL</label><br>
+          <input id="lights-list-url" 
                  type="url" 
-                 value="https://[bridge-ip]/api/[bridge-key]/groups"
+                 value="https://[bridge-ip]/api/[bridge-key]/lights"
                  size="80"><br>
-          <textarea id="groups-list-url-output"
+          <textarea id="lights-list-url-output"
                     cols="50"
                     rows="20"></textarea>
 
