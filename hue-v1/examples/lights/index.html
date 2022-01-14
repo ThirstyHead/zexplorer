@@ -117,7 +117,7 @@
         const hueBridgeIp = document.querySelector('#hue-bridge-ip').value || '[bridge-ip]';
         const hueBridgeKey = document.querySelector('#hue-bridge-key').value || '[bridge-key]';
 
-        let url = `https://${hueBridgeIp}/api/${hueBridgeKey}/groups/[group-id]/action`;
+        let url = `https://${hueBridgeIp}/api/${hueBridgeKey}/lights/[light-id]/state`;
         const field = document.querySelector('#lights-on-url');
         field.value = url;
       }
@@ -189,50 +189,91 @@
             <summary>Example response</summary>
             <pre><code>
 {
-  "2": {
-    "name": "Office",
-    "lights": [
-      "18",
-      "17",
-      "13"
-    ],
-    "sensors": [],
-    "type": "Room",
+  "18": {
     "state": {
-      "all_on": false,
-      "any_on": true
-    },
-    "recycle": false,
-    "class": "Office",
-    "action": {
       "on": true,
-      "alert": "select"
-    }
-  },
-  "3": {
-    "name": "Kitchen",
-    "lights": [
-      "3",
-      "16",
-      "15",
-      "19",
-      "14"
-    ],
-    "sensors": [],
-    "type": "Room",
-    "state": {
-      "all_on": false,
-      "any_on": true
+      "alert": "select",
+      "mode": "homeautomation",
+      "reachable": true
     },
-    "recycle": false,
-    "class": "Kitchen",
-    "action": {
+    "swupdate": {
+      "state": "noupdates",
+      "lastinstall": "2021-11-07T21:55:37"
+    },
+    "type": "On/Off plug-in unit",
+    "name": "Fill Light",
+    "modelid": "LOM004",
+    "manufacturername": "Signify Netherlands B.V.",
+    "productname": "Hue Smart plug",
+    "capabilities": {
+      "certified": true,
+      "control": {},
+      "streaming": {
+        "renderer": false,
+        "proxy": false
+      }
+    },
+    "config": {
+      "archetype": "plug",
+      "function": "functional",
+      "direction": "omnidirectional",
+      "startup": {
+        "mode": "safety",
+        "configured": true
+      }
+    },
+    "uniqueid": "00:17:88:01:09:d4:71:9d-0b",
+    "swversion": "1.76.10",
+    "swconfigid": "383D83B9",
+    "productid": "SmartPlug_OnOff_v01-00_04"
+  },
+  "19": {
+    "state": {
       "on": true,
       "bri": 254,
       "ct": 366,
       "alert": "select",
-      "colormode": "ct"
-    }
+      "colormode": "ct",
+      "mode": "homeautomation",
+      "reachable": false
+    },
+    "swupdate": {
+      "state": "noupdates",
+      "lastinstall": "2021-11-13T21:25:15"
+    },
+    "type": "Color temperature light",
+    "name": "Hue ambiance downlight 5",
+    "modelid": "LTD010",
+    "manufacturername": "Signify Netherlands B.V.",
+    "productname": "Hue ambiance downlight",
+    "capabilities": {
+      "certified": true,
+      "control": {
+        "mindimlevel": 200,
+        "maxlumen": 700,
+        "ct": {
+          "min": 153,
+          "max": 454
+        }
+      },
+      "streaming": {
+        "renderer": false,
+        "proxy": false
+      }
+    },
+    "config": {
+      "archetype": "recessedceiling",
+      "function": "functional",
+      "direction": "downwards",
+      "startup": {
+        "mode": "safety",
+        "configured": true
+      }
+    },
+    "uniqueid": "00:17:88:01:08:d4:08:a2-0b",
+    "swversion": "1.88.2",
+    "swconfigid": "EFE391A5",
+    "productid": "Philips-LTD010-1-DownWA_ML_v1"
   }
 }
             </code></pre>
@@ -240,14 +281,13 @@
         </div>
 
 
+        <h2 id="Turn-On-A-Light">Turn On A Light</h2>
 
-        <h2 id="Turn-On-All-Lights">Turn On All Lights</h2>
+        <p>To turn on a light, send a <code>HTTP PUT</code> to <code>https://[bridge-ip]/api/[bridge-key]/lights/[light-id]/state</code>. The body of the <code>PUT</code> should be a JSON block with <code>"on":true</code>.</p>
 
-        <p>To turn on all lights in a room, send a <code>HTTP PUT</code> to <code>https://[bridge-ip]/api/[bridge-key]/groups/[group-id]/action</code>. The body of the <code>PUT</code> should be a JSON block with <code>"on":true</code>.</p>
+        <p>This interface is technically "setting the light state". Depending on the capabilities of the light, you can also use this RESTful interface to adjust the brightness of the light (dimming), change the color (hue), or adjust other light-specific settings. </p>
 
-        <p>"Turning all all lights in the room" is technically "setting the group state" of a group. There might be other types of devices in the group (sensors, etc.). You might also want to set other types of state on lights -- changing the colors, or dimming.</p>
-
-        <p>Hue documentation: <a href="https://developers.meethue.com/develop/hue-api/groupds-api/#25_set_group_state">Set Group State</a>.</p>
+        <p>Hue documentation: <a href="https://developers.meethue.com/develop/hue-api/lights-api/#16_set_light_state">Set Light State</a>.</p>
 
         <div>
           <button id="lights-on-run">Run</button><br>
@@ -273,7 +313,7 @@
 [
   {
     "success": {
-      "/groups/2/action/on": true
+      "/lights/18/state/on": true
     }
   }
 ]
