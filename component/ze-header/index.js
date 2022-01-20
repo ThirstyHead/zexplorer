@@ -5,6 +5,8 @@ window.customElements.define('ze-header',
     }
 
     connectedCallback(){
+      this.origin = `${window.location.origin}/zexplorer`;
+
       const shadowRoot = this.attachShadow({mode: 'open'});
       shadowRoot.appendChild(this.style);
       shadowRoot.appendChild(this.content);
@@ -66,13 +68,13 @@ window.customElements.define('ze-header',
       let header = document.createElement('header');
       header.innerHTML = `
         <div class="brand">
-          <a href="/">ZExplorer</a>
+          <a href="${this.origin}/">ZExplorer</a>
         </div>
 
         <nav>
           <ul>
-            <li><a href="/hue-v1">hue-v1</a></li>
-            <li><a href="/hue-v2">hue-v2</a></li>
+            <li><a href="${this.origin}/hue-v1">hue-v1</a></li>
+            <li><a href="${this.origin}/hue-v2">hue-v2</a></li>
           </ul>
         </nav>
       `;

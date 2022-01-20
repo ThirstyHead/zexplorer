@@ -5,6 +5,8 @@ window.customElements.define('ze-hue-v1-sidebar',
     }
 
     connectedCallback(){
+      this.origin = `${window.location.origin}/zexplorer`;
+
       const shadowRoot = this.attachShadow({mode: 'open'});
       shadowRoot.appendChild(this.style);
       shadowRoot.appendChild(this.content);
@@ -16,7 +18,7 @@ window.customElements.define('ze-hue-v1-sidebar',
     }
 
     get baseUrl(){
-      return '/hue-v1';
+      return `${this.origin}/hue-v1`;
     }
 
     get open(){
